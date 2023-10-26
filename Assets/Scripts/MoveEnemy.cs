@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MoveEnemy : MonoBehaviour
 {
+    [SerializeField] float enemySpeed = 5f;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -13,6 +15,7 @@ public class MoveEnemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector3.forward * Time.deltaTime * 5);
+
+        transform.Translate(Vector3.left * Time.deltaTime * enemySpeed);
     }
 }

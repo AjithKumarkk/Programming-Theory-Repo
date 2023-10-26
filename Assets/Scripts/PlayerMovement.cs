@@ -1,13 +1,24 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] float horizontalInput;
     [SerializeField] float speed = 10f;
-    private float zBoundRange = 15f;
+    private float zBoundRange = 10f;
+    public bool isGameOver = false;
+
+    public ParticleSystem explosionParticle;
+
+    public GameObject projectilePrefab;
+
+    public TextMeshProUGUI gameOverText;
+    public TextMeshProUGUI restartText;
+    public ScoreManager scoreManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,6 +28,14 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isGameOver)
+        {
+            if (Input.GetKeyDown(KeyCode.R)) 
+            {
+                RestartGame();            
+            }
+        }
+
         if (transform.position.z > zBoundRange)
         {
             transform.position = new Vector3(transform.position.x, transform.position.y, zBoundRange);
@@ -27,12 +46,39 @@ public class PlayerMovement : MonoBehaviour
         }
 
         horizontalInput = Input.GetAxis("Horizontal");
-        transform.Translate(Vector3.right * horizontalInput * Time.deltaTime * speed);
+        transform.Translate(Vector3.forward * horizontalInput * Time.deltaTime * speed);
+
+
+        if (Input.GetKeyDown(KeyCode.Space) && isGameOver == false)
+        {
+            Instantiate(projectilePrefab, transform.position, projectilePrefab.transform.rotation);
+        }
        
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        Destroy(gameObject);
+    private void OnCollisionEnter(Collision collision)
+    {      
+        if (gameObject.CompareTag("Player"))
+        {
+            isGameOver = true;
+            explosionParticle.Play();
+            Destroy(collision.gameObject);
+            ShowGameOverText(scoreManager.GetScore());
+        }
     }
+    private void ShowGameOverText(int score)
+    {
+       if (gameOverText != null)
+        {
+            gameOverText.gameObject.SetActive(true);
+            gameOverText.text = "Game Over\nScore: " + score;
+            restartText.gameObject.SetActive(true);
+        }
+    }
+
+    private void RestartGame()
+    {
+        SceneManager.LoadScene(1);
+    }
+
 }
