@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
 
     public TextMeshProUGUI gameOverText;
     public TextMeshProUGUI restartText;
+    public TextMeshProUGUI quitText;
     public ScoreManager scoreManager;
     // Start is called before the first frame update
     void Start()
@@ -33,6 +34,10 @@ public class PlayerMovement : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.R)) 
             {
                 RestartGame();            
+            }
+            else if (Input.GetKeyDown(KeyCode.Q))
+            {
+                QuitGame();
             }
         }
 
@@ -73,12 +78,18 @@ public class PlayerMovement : MonoBehaviour
             gameOverText.gameObject.SetActive(true);
             gameOverText.text = "Game Over\nScore: " + score;
             restartText.gameObject.SetActive(true);
+            quitText.gameObject.SetActive(true);
         }
     }
 
     private void RestartGame()
     {
         SceneManager.LoadScene(1);
+    }
+
+    private void QuitGame()
+    {
+        SceneManager.LoadScene(0);
     }
 
 }
