@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 public class ProjectileHit : MonoBehaviour
 {
     private ScoreManager scoreManager;
+    
+   
 
     private void Start()
     {
@@ -14,7 +17,7 @@ public class ProjectileHit : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.CompareTag("Enemy"))
-        {
+        {   
             Destroy(gameObject);
             Destroy(collision.gameObject);
 

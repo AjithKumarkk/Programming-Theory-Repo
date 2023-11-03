@@ -28,4 +28,15 @@ public class StartMenu : MonoBehaviour
         Application.Quit();
 #endif
     }
+
+    public void Help()
+    {
+        SceneManager.LoadScene(2);
+    }
+
+    public void MainMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
+
 }
